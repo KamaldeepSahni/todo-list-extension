@@ -1,0 +1,69 @@
+.App {
+  padding: 15px;
+}
+
+.App h1 {
+  font-weight: 500;
+  color: #fff;
+}
+
+.App p {
+  color: #fff;
+  font-weight: 300;
+}
+
+.todo {
+  display: flex;
+  padding: 15px;
+  margin: 5px 10px;
+  color: #fff;
+  background-color: #3b3a3a;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 5px;
+}
+
+.todo p,
+.todo a {
+  color: #fff;
+  margin: 0;
+  margin-right: 16px;
+  font-size: 20px;
+  font-weight: 300;
+  overflow-wrap: anywhere;
+}
+
+.todo a {
+  cursor: pointer;
+}
+
+.todo span {
+  margin: 0;
+  margin: 16px;
+  cursor: pointer;
+}
+
+.create-todo-form {
+  text-align: center;
+}
+
+.create-todo-form button {
+  margin: 5px;
+}
+
+.complete {
+  text-decoration: line-through;
+}
+
+.btn {
+  height: 40px !important;
+  padding: 5px !important;
+  font-weight: bold !important;
+  color: #fff !important;
+  background-color: #0062cc !important;
+}
+
+.btn:hover {
+  background-color: #0062cc !important;
+  opacity: 0.75 !important;
+}
