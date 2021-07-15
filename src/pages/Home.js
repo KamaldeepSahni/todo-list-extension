@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import { Button } from '@material-ui/core';
+import { ThreeBounce } from 'better-react-spinkit';
 import axios from 'axios';
 import './Home.css';
 
@@ -16,6 +17,7 @@ const Home = () => {
 
   const [todos, updateTodos, addTodo, updateTodo, deleteTodo] = useTodos();
 
+  const [loading, setLoading] = useState(false);
   const [currentTodo, setCurrentTodo] = useState({
     _id: null,
     label: '',
@@ -30,6 +32,7 @@ const Home = () => {
 
   useEffect(() => {
     const getTodos = async () => {
+      setLoading(true);
       try {
         const config = {
           headers: {
@@ -40,9 +43,11 @@ const Home = () => {
         const { data } = await axios.get(`${apiBaseUrl}/todos`, config);
 
         if (data.todos) {
+          setLoading(false);
           updateTodos(data.todos);
         }
       } catch (err) {
+        setLoading(false);
         console.error(err);
       }
     };
@@ -98,12 +103,27 @@ const Home = () => {
           editCompleted={currentTodo.completed}
           setEditTodo={setCurrentTodo}
         />
-        {todos.length === 0 && (
+        {loading && (
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              height: '100%',
+              width: '100%',
+              marginTop: '50px',
+            }}
+          >
+            <ThreeBounce size={20} color="#0062cc" />
+          </div>
+        )}
+        {!loading && todos.length === 0 && (
           <p style={{ textAlign: 'center', fontSize: '20px' }}>
             Add a new Todo!
           </p>
         )}
-        {todos &&
+        {!loading &&
+          todos &&
           todos.length > 0 &&
           todos.map(todo => (
             <div className="todo" key={todo._id}>

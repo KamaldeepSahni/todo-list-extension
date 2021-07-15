@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { OutlinedInput, Button, makeStyles } from '@material-ui/core';
+import { OutlinedInput, Button, makeStyles, Snackbar } from '@material-ui/core';
 import { useHistory, Link } from 'react-router-dom';
 import axios from 'axios';
 
@@ -14,6 +14,10 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  snackbar: {
+    backgroundColor: '#f44336',
+    color: '#fff',
   },
   container: {
     width: '350px',
@@ -66,6 +70,8 @@ const Login = () => {
 
   const [{ user }, dispatch] = useAuthValue();
 
+  const [open, setOpen] = useState(false);
+  const [message, setMessage] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -100,9 +106,19 @@ const Login = () => {
           token: data.token,
         });
       }
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
+      setOpen(true);
+      if (err.response && err.response.data) {
+        setMessage(err.response.data.message);
+      } else {
+        setMessage('Something went wrong! Please try again later.');
+      }
     }
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setMessage('');
   };
 
   return (
@@ -111,6 +127,17 @@ const Login = () => {
         <h1 style={{ textAlign: 'center', width: '100%', marginLeft: '-25px' }}>
           Login
         </h1>
+        <Snackbar
+          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
+          open={open}
+          onClose={handleClose}
+          message={message}
+          ContentProps={{
+            classes: {
+              root: classes.snackbar,
+            },
+          }}
+        />
         <OutlinedInput
           onChange={({ target }) => setEmail(target.value)}
           type="email"
